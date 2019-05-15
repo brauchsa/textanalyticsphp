@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="estilos.css" rel="stylesheet" type="text/css">
+<title>ML at the Edge</title>
+
+
+<script>
+  function sentiment()
+  {
+    
+    var xmlhttp = new XMLHttpRequest();
+    text = document.getElementById("texto").value;
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        
+        myObj = JSON.parse(this.responseText);
+        //document.getElementById("demo").innerHTML = myObj.documents[0].score;
+        evaluatedScore = parseFloat(myObj.documents[0].score);
+        percScore = evaluatedScore * 100;
+        if(evaluatedScore > .6)
+        {
+          document.getElementById("desc").innerHTML = "Good Review with a " + evaluatedScore;
+          document.getElementById("desc").setAttribute("style", "color: seagreen;font-weight: bold");
+          
+        }
+        else
+        {
+          document.getElementById("desc").innerHTML = "Bad Review with a " + evaluatedScore;
+          document.getElementById("desc").setAttribute("style", "color: red;font-weight: bold");
+        }
+
+        
+
+        
+      }
+    };
+    xmlhttp.open("GET", "textanalytics.php?inputText="+text, true);
+    xmlhttp.send();
+    
+  } 
+  </script>
+
+</head>
+
+<body>
+<div id="header">
+<img src="img/header-logo.png"></img>
+</div>
+
+<div id="hero">
+<div class="content">
+	<h1>ML at the Edge Demo</h1>
+</div>
+</div>
+<div id="wrapper">
+	<div class="container grey">
+    	<div class="content">
+        	<p>Azure Stack App Service<b>v4</b>.<br></br></p>
+        </div>          
+    </div>
+
+
+    <div class="form">
+    <div class="container">
+    <div class="content">
+    <div class="section">
+    <div class="section-content">
+    <div class="row">
+    <div class="full">
+    <form method="get" action="">
+    <label for="txtEnrollment">Text:</label>
+    <input type="text" name="texto" id="texto">
+    
+	</div>
+    </div>
+    <div class="row">
+    <input type="button" onclick="sentiment()" value="Evaluate">
+    </form>
+    </div>
+   
+    
+    <div class="row">
+    <span id="demo"></span>
+    <span id="desc"></span>
+    </div>
+    
+    </div></div></div></div></div>
+
+
+  <div id="footer">
+    &copy; 2016 Microsoft Corporation. All rights reserved. | <a href="http://www.microsoft.com/about/legal/en/us/Intellectualproperty/Copyright/Default.aspx" target="_blank">Terms of Use</a>
+    | <a href="http://www.microsoft.com/en-us/privacystatement/default.aspx">Privacy Statement</a>
+  </div>
+  
+  
+</body>
+</html>
